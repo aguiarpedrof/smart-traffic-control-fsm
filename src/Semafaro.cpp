@@ -14,7 +14,7 @@ std::mutex mtxTempos;
 void MonitorarBotao() {
 while (true) {
     char c;
-    std::cin >> c; // Trava aqui até digitar algo
+    std::cin >> c; 
     if (c == 'p') {
         std::cout << "\n[!] SINAL DE PEDESTRE SOLICITADO!" << std::endl;
         botaoPedestreApertado = true;
@@ -36,7 +36,7 @@ Semaforo() : estadoAtual(VERDE) {
 }
 
 void carregarDados() {
-    // LOCK: Pegamos a chave antes de mexer nos dados
+    // LOCK
     std::lock_guard<std::mutex> lock(mtxTempos);
 
     std::ifstream arquivo("config.txt");
@@ -52,13 +52,13 @@ void carregarDados() {
         tempos[cor] = tempo;
     }
     std::cout << "[SISTEMA] Dados carregados com seguranca (Mutex Ativo)." << std::endl;
-    // O UNLOCK acontece automaticamente quando a função termina (lock_guard)
+    // UNLOCK automatico
 }
 
 void sleepInteligente(std::string cor) {
     int segundos;
 
-    // Protegemos a leitura: Garantimos que ninguém mude o tempo enquanto lemos
+   
     {
         std::lock_guard<std::mutex> lock(mtxTempos);
         segundos = tempos[cor];
